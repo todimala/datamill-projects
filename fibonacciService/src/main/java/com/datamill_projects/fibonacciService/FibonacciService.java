@@ -37,7 +37,8 @@ public class FibonacciService {
 			series.add(k);
 		}
 		
-		//return series;		
+		// I would rather prefer to return a simple POJO object and 
+		// let controller figure out to build the response object
 		return Observable.just(new ResponseBuilderImpl(service).ok(series.toString()));
 	}
 }
