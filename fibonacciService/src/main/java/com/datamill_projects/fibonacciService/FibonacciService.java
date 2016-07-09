@@ -13,7 +13,7 @@ public class FibonacciService {
 
 	ExecutorService service = Executors.newSingleThreadExecutor();
 	
-	public Observable<Response> getFibonacciSeries(Integer count) throws Exception {
+	public List<Integer> getFibonacciSeries(Integer count) throws Exception {
 		
 		if (count <= 0) {
 			throw new InvalidInputException(count);
@@ -39,7 +39,8 @@ public class FibonacciService {
 		
 		// I would rather prefer to return a simple POJO object and 
 		// let controller figure out to build the response object
-		return Observable.just(new ResponseBuilderImpl(service).ok(series.toString()));
+		return series;
+		//return Observable.just(new ResponseBuilderImpl(service).ok(series.toString()));
 	}
 }
 
