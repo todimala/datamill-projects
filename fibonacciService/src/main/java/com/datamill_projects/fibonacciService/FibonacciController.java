@@ -1,8 +1,5 @@
 package com.datamill_projects.fibonacciService;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import foundation.stack.datamill.http.Response;
 import foundation.stack.datamill.http.ServerRequest;
 import foundation.stack.datamill.http.annotations.GET;
@@ -13,7 +10,6 @@ import rx.Observable;
 public class FibonacciController {
 
 	private FibonacciService fibonacciService;
-	static String response = "";
 	
 	//@Inject
 	public FibonacciController(FibonacciService service) {
@@ -22,14 +18,10 @@ public class FibonacciController {
 	
 	@GET
     @Path("/{count}")
-    public Observable<Response> getSeries(ServerRequest request) throws Exception {
+    public Observable<Response> getSeries(ServerRequest request) throws IllegalArgumentException {
 		int count = request.uriParameter("count").asInteger();
-		try {
-			response = fibonacciService.getFibonacciSeries(count).toString();
-			System.out.println("response = " + response);
-		} catch (Exception ex) {
-
-		}
-		return request.respond(b -> b.ok(response));
+		return request.respond(b -> { try { return b.ok(fibonacciService.getFibonacciSeries(count).toString()); } 
+									  catch (IllegalArgumentException ex) { throw new IllegalArgumentException(ex); }
+		});
     }
 }

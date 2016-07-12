@@ -5,18 +5,14 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import foundation.stack.datamill.http.Response;
-import foundation.stack.datamill.http.impl.ResponseBuilderImpl;
-import rx.Observable;
-
 public class FibonacciService {
 
 	ExecutorService service = Executors.newSingleThreadExecutor();
 	
-	public List<Integer> getFibonacciSeries(Integer count) throws Exception {
+	public List<Integer> getFibonacciSeries(Integer count) throws IllegalArgumentException {
 		
 		if (count <= 0) {
-			throw new InvalidInputException(count);
+			throw new IllegalArgumentException();
 		}
 		
 		List<Integer> series = new ArrayList<Integer>(count);
@@ -37,14 +33,12 @@ public class FibonacciService {
 			series.add(k);
 		}
 		
-		// I would rather prefer to return a simple POJO object and 
-		// let controller figure out to build the response object
 		return series;
 		//return Observable.just(new ResponseBuilderImpl(service).ok(series.toString()));
 	}
 }
 
-class InvalidInputException extends RuntimeException {
+class InvalidInputException extends IllegalArgumentException {
 
 	/**
 	 * 
